@@ -109,6 +109,75 @@ tabela_summary <- tabela %>%
 
 
 
+
+# Gráfico de barras verticais Número de Escaladores por Modalidade e Gênero
+ggplot(tabela, aes(x = modalidade, fill = genero)) +
+  geom_bar(position = "dodge") +  # Barras lado a lado para cada gênero
+  geom_text(stat = "count", aes(label = ..count..), 
+            position = position_dodge(width = 0.9), 
+            vjust = 1.5, size = 5, color = "black") +  # Ajusta o vjust para colocar o texto dentro da barra
+  labs(title = "Número de Escaladores por Modalidade e Gênero",
+       x = "",
+       y = "",
+       fill = "Gênero") +
+  theme_minimal() +
+  theme(panel.grid = element_blank(),  # Remove as linhas de grade
+        axis.text = element_blank(),    # Remove os textos dos eixos
+        axis.ticks = element_blank())   # Remove as marcações dos eixos
+
+
+# Gráfico de barras com a Proporção de Escaladores por Tempo de Escalada
+ggplot(tabela, aes(x = tempo_esc, fill = tempo_esc)) +
+  geom_bar(aes(y = ..count../sum(..count..)), stat = "count") +
+  geom_text(aes(y = ..count../sum(..count..), 
+                label = scales::percent(..count../sum(..count..), accuracy = 1)),
+            stat = "count", 
+            position = position_stack(vjust = 0.5),  # Centraliza o texto verticalmente dentro da barra
+            color = "black", size = 4) +  # Ajusta a cor e o tamanho do texto
+  scale_y_continuous(labels = scales::percent_format()) +
+  labs(title = "Proporção de Escaladores por Tempo de Escalada", 
+       x = "", 
+       y = "") +
+  theme_minimal() +
+  theme(panel.grid = element_blank(),  # Remove as linhas de grade
+        axis.text = element_blank(),    # Remove os textos dos eixos
+        axis.ticks = element_blank())   # Remove as marcações dos eixos
+
+
+# Gráfico de barras verticais com a Proporção de Escaladores por Faixa Etária
+ggplot(tabela, aes(x = as.factor(idade), fill = as.factor(idade))) +
+  geom_bar(aes(y = ..count../sum(..count..)), stat = "count") +
+  scale_y_continuous(labels = scales::percent_format()) +
+  labs(title = "Proporção de Escaladores por Faixa Etária", 
+       x = "", 
+       y = "") +
+  theme_minimal() +
+  theme(panel.grid = element_blank(),   # Remove as linhas de grade
+        axis.ticks = element_blank(),   # Remove as marcações dos eixos
+        legend.position = "none")       # Remove a legenda
+
+
+
+# Gráfico de barras com a Proporção de Escaladores por Modalidade
+ggplot(tabela, aes(x = modalidade, fill = modalidade)) +
+  geom_bar(aes(y = ..count../sum(..count..)), stat = "count") +
+  geom_text(aes(y = ..count../sum(..count..), 
+                label = scales::percent(..count../sum(..count..), accuracy = 1)),
+            stat = "count", 
+            position = position_stack(vjust = 0.5),  # Centraliza o texto verticalmente dentro da barra
+            color = "black", size = 4) +  # Ajusta a cor e o tamanho do texto
+  scale_y_continuous(labels = scales::percent_format()) +
+  labs(title = "Proporção de Escaladores por Modalidade", 
+       x = "", 
+       y = "") +
+  theme_minimal() +
+  theme(panel.grid = element_blank(),   # Remove as linhas de grade
+        axis.ticks = element_blank(),   # Remove as marcações dos eixos
+        axis.text.y = element_text(size = 10),  # Ajusta o tamanho do texto do eixo y
+        legend.position = "none")       # Remove a legenda
+
+
+
 # Gráfico de barras verticais Número de Escaladores por Modalidade e Gênero
 ggplot(tabela, aes(x = modalidade, fill = genero)) +
   geom_bar(position = "dodge") +  # Barras lado a lado para cada gênero
@@ -133,78 +202,6 @@ ggplot(tabela, aes(x = genero, fill = tempo_esc)) +
        y = "",
        fill = "Tempo de Escalada") +
   theme_minimal()  # Usando o tema minimalista para clareza
-
-
-
-# Gráfico de barras verticais Proporção de Escaladores por Gênero
-ggplot(tabela, aes(x = genero, fill = genero)) +
-  geom_bar(aes(y = ..count../sum(..count..)), stat = "count") +
-  geom_text(aes(y = ..count../sum(..count..), 
-                label = scales::percent(..count../sum(..count..), accuracy = 1)),
-            stat = "count", 
-            position = position_stack(vjust = 0.5),  # Centraliza o texto verticalmente dentro da barra
-            color = "black", size = 5) +  # Ajusta a cor e o tamanho do texto
-  scale_y_continuous(labels = scales::percent_format()) +
-  labs(title = "Proporção de Escaladores por Gênero", 
-       x = "", 
-       y = "") +
-  theme_minimal()
-
-
-
-
-# Gráfico de barras com a Proporção de Escaladores por Tempo de Escalada
-ggplot(tabela, aes(x = tempo_esc, fill = tempo_esc)) +
-  geom_bar(aes(y = ..count../sum(..count..)), stat = "count") +
-  geom_text(aes(y = ..count../sum(..count..), 
-                label = scales::percent(..count../sum(..count..), accuracy = 1)),
-            stat = "count", 
-            position = position_stack(vjust = 0.5),  # Centraliza o texto verticalmente dentro da barra
-            color = "black", size = 4) +  # Ajusta a cor e o tamanho do texto
-  scale_y_continuous(labels = scales::percent_format()) +
-  labs(title = "Proporção de Escaladores por Tempo de Escalada", 
-       x = "", 
-       y = "") +
-  theme_minimal()
-
-
-
-#grafico barra Proporção de Escaladores por Faixa Etária"
-ggplot(tabela, aes(x = as.factor(idade))) +
-  geom_bar(aes(y = ..count../sum(..count..), fill = as.factor(idade))) +
-  scale_y_continuous(labels = scales::percent_format()) +
-  labs(title = "Proporção de Escaladores por Faixa Etária", 
-       x = "", 
-       y = "") +
-  theme_minimal()
-
-#grafico barra Proporção de Escaladores por Modalidade
-ggplot(tabela, aes(x = modalidade)) +
-  geom_bar(aes(y = ..count../sum(..count..), fill = modalidade)) +
-  scale_y_continuous(labels = scales::percent_format()) +
-  labs(title = "Proporção de Escaladores por Modalidade", 
-       x = "Modalidade", 
-       y = "Proporção") +
-  theme_minimal()
-
-
-
-# Gráfico de barras verticais Proporção de Escaladores por Modalidade
-ggplot(tabela, aes(x = modalidade, fill = modalidade)) +
-  geom_bar(aes(y = ..count../sum(..count..)), stat = "count") +
-  geom_text(aes(y = ..count../sum(..count..), 
-                label = scales::percent(..count../sum(..count..), accuracy = 1)),
-            stat = "count", 
-            position = position_stack(vjust = 0.5),  # Centraliza o texto verticalmente dentro da barra
-            color = "black", size = 4) +  # Ajusta a cor e o tamanho do texto
-  scale_y_continuous(labels = scales::percent_format()) +
-  labs(title = "Proporção de Escaladores por Modalidade", 
-       x = "", 
-       y = "") +
-  theme_minimal()
-
-
-
 
 
 
